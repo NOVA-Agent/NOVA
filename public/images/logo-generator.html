@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVA Logo Generator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+      flex-direction: column;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #4a4af4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="logoCanvas" width="400" height="400"></canvas>
+  <button id="downloadBtn">Download PNG</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('logoCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Draw background
+      ctx.fillStyle = '#061029';
+      ctx.beginPath();
+      ctx.arc(200, 200, 190, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Draw outer circle
+      ctx.strokeStyle = '#0c1a40';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(200, 200, 195, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Draw concentric circles
+      ctx.strokeStyle = '#0c1a40';
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.6;
+      [160, 130, 100].forEach(radius => {
+        ctx.beginPath();
+        ctx.arc(200, 200, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+      
+      // Draw star shape
+      ctx.fillStyle = '#6633ff';
+      ctx.strokeStyle = '#8080ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      // Star points
+      const points = [
+        [200, 100], // top
+        [226, 158], // top right
+        [290, 165], // right
+        [245, 210], // bottom right
+        [255, 273], // bottom
+        [200, 243], // bottom center
+        [145, 273], // bottom left
+        [155, 210], // bottom left
+        [110, 165], // left
+        [174, 158]  // top left
+      ];
+      
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
+      }
+      ctx.closePath();
+      
+      // Create gradient
+      const gradient = ctx.createLinearGradient(100, 100, 300, 300);
+      gradient.addColorStop(0, '#9933ff');
+      gradient.addColorStop(0.5, '#6600ff');
+      gradient.addColorStop(1, '#3366ff');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      ctx.stroke();
+      
+      // Star center glow
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(200, 175, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Small stars/dots
+      const stars = [
+        [150, 130, 2],
+        [260, 140, 2],
+        [280, 200, 2],
+        [240, 240, 2],
+        [120, 190, 2],
+        [170, 230, 2],
+        [220, 120, 2],
+        [300, 170, 1.5]
+      ];
+      
+      ctx.fillStyle = 'white';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star[0], star[1], star[2], 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      // Light beams
+      ctx.strokeStyle = '#6633ff';
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.7;
+      
+      const beams = [
+        [200, 90, 200, 60],
+        [240, 110, 270, 80],
+        [270, 170, 310, 170],
+        [160, 110, 130, 80],
+        [130, 170, 90, 170]
+      ];
+      
+      beams.forEach(beam => {
+        ctx.beginPath();
+        ctx.moveTo(beam[0], beam[1]);
+        ctx.lineTo(beam[2], beam[3]);
+        ctx.stroke();
+      });
+      
+      ctx.globalAlpha = 1;
+      
+      // Gradient bar at bottom
+      ctx.beginPath();
+      ctx.roundRect(150, 300, 100, 10, 2);
+      
+      const barGradient = ctx.createLinearGradient(150, 0, 250, 0);
+      barGradient.addColorStop(0, '#9933ff');
+      barGradient.addColorStop(1, '#00cccc');
+      ctx.fillStyle = barGradient;
+      ctx.fill();
+      
+      // Download button
+      document.getElementById('downloadBtn').addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'nova-logo.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html> 

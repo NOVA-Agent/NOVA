@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">Strategy Builder Workflow</text>
+  
+  <!-- Start -->
+  <circle cx="400" cy="100" r="40" fill="#e6f7ff" stroke="#1890ff" stroke-width="2" />
+  <text x="400" y="105" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Start</text>
+  
+  <!-- Flow Arrow -->
+  <line x1="400" y1="140" x2="400" y2="180" stroke="#1890ff" stroke-width="2" />
+  <polygon points="400,180 395,170 405,170" fill="#1890ff" />
+  
+  <!-- Component Selection -->
+  <rect x="300" y="180" width="200" height="60" rx="10" ry="10" fill="#f6ffed" stroke="#52c41a" stroke-width="2" />
+  <text x="400" y="215" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Select Strategy Components</text>
+  
+  <!-- Flow Arrow -->
+  <line x1="400" y1="240" x2="400" y2="280" stroke="#52c41a" stroke-width="2" />
+  <polygon points="400,280 395,270 405,270" fill="#52c41a" />
+  
+  <!-- Parameter Configuration -->
+  <rect x="300" y="280" width="200" height="60" rx="10" ry="10" fill="#fff2e8" stroke="#fa8c16" stroke-width="2" />
+  <text x="400" y="315" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Configure Parameters</text>
+  
+  <!-- Flow Arrow -->
+  <line x1="400" y1="340" x2="400" y2="380" stroke="#fa8c16" stroke-width="2" />
+  <polygon points="400,380 395,370 405,370" fill="#fa8c16" />
+  
+  <!-- Strategy Validation -->
+  <polygon points="400,380 450,410 400,440 350,410" fill="#f9f0ff" stroke="#722ed1" stroke-width="2" />
+  <text x="400" y="415" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Valid?</text>
+  
+  <!-- No Flow -->
+  <line x1="350" y1="410" x2="250" y2="410" stroke="#722ed1" stroke-width="2" />
+  <polygon points="250,410 260,405 260,415" fill="#722ed1" />
+  <text x="300" y="400" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">No</text>
+  
+  <line x1="250" y1="410" x2="250" y2="210" stroke="#722ed1" stroke-width="2" />
+  <line x1="250" y1="210" x2="300" y2="210" stroke="#722ed1" stroke-width="2" />
+  <polygon points="300,210 290,205 290,215" fill="#722ed1" />
+  
+  <!-- Yes Flow -->
+  <line x1="400" y1="440" x2="400" y2="480" stroke="#722ed1" stroke-width="2" />
+  <polygon points="400,480 395,470 405,470" fill="#722ed1" />
+  <text x="415" y="460" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Yes</text>
+  
+  <!-- Backtesting -->
+  <rect x="300" y="480" width="200" height="60" rx="10" ry="10" fill="#f6ffed" stroke="#52c41a" stroke-width="2" />
+  <text x="400" y="515" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Run Backtesting</text>
+  
+  <!-- Horizontal Branches -->
+  <line x1="500" y1="510" x2="550" y2="510" stroke="#52c41a" stroke-width="2" />
+  <line x1="550" y1="510" x2="550" y2="410" stroke="#52c41a" stroke-width="2" />
+  <line x1="550" y1="410" x2="450" y2="410" stroke="#52c41a" stroke-width="2" />
+  <polygon points="450,410 460,405 460,415" fill="#52c41a" />
+  <text x="525" y="400" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Optimize</text>
+  
+  <!-- Final Flow -->
+  <line x1="400" y1="540" x2="400" y2="580" stroke="#52c41a" stroke-width="2" />
+  <polygon points="400,580 395,570 405,570" fill="#52c41a" />
+  <text x="425" y="560" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Deploy</text>
+  
+  <!-- End -->
+  <rect x="350" y="580" width="100" height="40" rx="20" ry="20" fill="#fff2e8" stroke="#fa8c16" stroke-width="2" />
+  <text x="400" y="605" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Live Trading</text>
+</svg> 
