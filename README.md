@@ -7,12 +7,11 @@
   
   <p>Next-generation AI-driven trading assistant on Solana blockchain</p>
   <p>Practical market intelligence, automated trading capabilities, and portfolio management tools for the Solana DeFi ecosystem</p>
-  <p><strong>Version: 1.02</strong></p>
   
   <div>
     <a href="https://www.novas.today" target="_blank">Website</a> •
     <a href="https://x.com/NOVA_AIC" target="_blank">Twitter</a> •
-    <a href="https://github.com/NOVA-Agent" target="_blank">GitHub</a>
+    <a href="https://github.com/NOVA-Agent/NOVA" target="_blank">GitHub</a>
   </div>
   <br />
 </div>
@@ -159,8 +158,6 @@ export const useSentimentAnalysis = (symbols: string[] = []) => {
 ### Strategy Builder Workflow
 
 The Strategy Builder allows users to create custom trading strategies visually:
-
-![Strategy Builder Workflow](./public/images/strategy-flow.svg)
 
 1. **Component Selection**: Users drag and drop components from the library onto the canvas
 2. **Parameter Configuration**: Each component's parameters are configured
