@@ -52,8 +52,6 @@ NOVA follows a modular, layered architecture designed for scalability and mainta
 
 The application's data flow follows clear patterns for predictable state updates:
 
-![Data Flow](./public/images/data-flow.svg)
-
 1. **External Data Sources**:
    - Real-time market data from DEX APIs
    - Blockchain data from Solana RPC nodes
