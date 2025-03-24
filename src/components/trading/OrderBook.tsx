@@ -7,7 +7,7 @@ interface OrderType {
   depth: number;
 }
 
-// 模拟数据
+// Mock data
 const generateOrders = (
   basePrice: number, 
   count: number, 
@@ -32,11 +32,11 @@ const generateOrders = (
       price: Number(price.toFixed(2)),
       size,
       total,
-      depth: 0 // 将在后面计算
+      depth: 0 // Will be calculated later
     });
   }
 
-  // 计算相对深度百分比
+  // Calculate relative depth percentage
   orders = orders.map(order => ({
     ...order,
     depth: (order.total / maxDepth) * 100
@@ -45,7 +45,7 @@ const generateOrders = (
   return orders;
 };
 
-// 模拟数据
+// Mock data
 const mockAsks = generateOrders(101.25, 12, false);
 const mockBids = generateOrders(101.20, 12, true);
 
@@ -54,7 +54,7 @@ const OrderBook: React.FC = () => {
   const [bids, setBids] = useState<OrderType[]>(mockBids);
   const [aggregationLevel, setAggregationLevel] = useState<number>(0.1);
 
-  // 格式化数字
+  // Format number
   const formatNumber = (num: number, precision: number = 2) => {
     return num.toFixed(precision);
   };
@@ -63,7 +63,7 @@ const OrderBook: React.FC = () => {
     <div className="w-full h-full bg-gray-900 rounded-lg shadow-md overflow-hidden">
       <div className="p-3 border-b border-gray-800">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-white">订单簿</h3>
+          <h3 className="text-lg font-semibold text-white">Order Book</h3>
           <div className="flex space-x-2">
             <button className="px-2 py-1 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-md">
               0.1
@@ -79,12 +79,12 @@ const OrderBook: React.FC = () => {
       </div>
       
       <div className="text-sm font-medium text-gray-500 grid grid-cols-3 px-3 py-2">
-        <div>数量</div>
-        <div className="text-center">价格</div>
-        <div className="text-right">总量</div>
+        <div>Quantity</div>
+        <div className="text-center">Price</div>
+        <div className="text-right">Total</div>
       </div>
       
-      {/* 卖单 */}
+      {/* Ask orders */}
       <div className="overflow-y-auto h-40 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {asks.map((ask, index) => (
           <div key={`ask-${index}`} className="group px-3 py-1 hover:bg-gray-800 relative">
@@ -101,18 +101,18 @@ const OrderBook: React.FC = () => {
         ))}
       </div>
       
-      {/* 中间区域 - 最新价格 */}
+      {/* Middle area - Latest price */}
       <div className="py-2 px-3 bg-gray-800 flex justify-between items-center">
         <span className="text-xl font-bold text-green-500">101.20</span>
         <span className="text-sm text-gray-400">$101.20</span>
       </div>
       
-      {/* 买单 */}
+      {/* Bid orders */}
       <div className="overflow-y-auto h-40 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {bids.map((bid, index) => (
           <div key={`bid-${index}`} className="group px-3 py-1 hover:bg-gray-800 relative">
             <div 
-              className="absolute top-0 left-0 h-full bg-green-900/30"
+              className="absolute top-0 right-0 h-full bg-green-900/30"
               style={{ width: `${bid.depth}%` }}
             />
             <div className="grid grid-cols-3 text-sm relative z-10">
@@ -127,4 +127,4 @@ const OrderBook: React.FC = () => {
   );
 };
 
-export default OrderBook; 
+export default OrderBook;

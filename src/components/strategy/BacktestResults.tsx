@@ -139,52 +139,52 @@ export default function BacktestResults({
     <div className="bg-gray-900 rounded-xl border border-gray-700 p-6 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white">{strategyName} 回测结果</h2>
+          <h2 className="text-xl font-bold text-white">Backtest Results for {strategyName}</h2>
           <p className="text-gray-400">
-            {marketName} ({timeframe}) • {period.start} 至 {period.end} • 初始资金: {initialCapital} USDC
+            {marketName} ({timeframe}) • {period.start} to {period.end} • Initial Capital: {initialCapital} USDC
           </p>
         </div>
         <div className="flex gap-2">
           <button className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-sm">
-            导出报告
+            Export Report
           </button>
           <button className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-sm">
-            优化策略
+            Optimize Strategy
           </button>
         </div>
       </div>
       
-      {/* 总体绩效 */}
+      {/* Overall Performance */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-gray-800 rounded-lg p-4">
-          <p className="text-gray-400 text-sm">总收益</p>
+          <p className="text-gray-400 text-sm">Total Return</p>
           <p className={`text-xl font-bold ${stats.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {stats.totalReturn >= 0 ? '+' : ''}{stats.totalReturn.toFixed(2)}%
           </p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4">
-          <p className="text-gray-400 text-sm">最大回撤</p>
+          <p className="text-gray-400 text-sm">Maximum Drawdown</p>
           <p className="text-xl font-bold text-red-400">
             -{stats.maxDrawdown.toFixed(2)}%
           </p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4">
-          <p className="text-gray-400 text-sm">胜率</p>
+          <p className="text-gray-400 text-sm">Win Rate</p>
           <p className="text-xl font-bold text-white">
             {stats.winRate.toFixed(1)}%
           </p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4">
-          <p className="text-gray-400 text-sm">夏普比率</p>
+          <p className="text-gray-400 text-sm">Sharpe Ratio</p>
           <p className="text-xl font-bold text-white">
             {stats.sharpeRatio.toFixed(2)}
           </p>
         </div>
       </div>
       
-      {/* 收益曲线 */}
+      {/* Profit Curve */}
       <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-white font-medium mb-4">收益曲线</h3>
+        <h3 className="text-white font-medium mb-4">Profit Curve</h3>
         <div className="h-64 w-full flex items-end justify-between space-x-2">
           {equity.map((point, index) => {
             const heightPercent = 30 + ((point.value - initialCapital) / initialCapital) * 100 * 2;
@@ -208,61 +208,61 @@ export default function BacktestResults({
         </div>
       </div>
       
-      {/* 详细统计信息 */}
+      {/* Detailed Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 左侧：统计信息 */}
+        {/* Left: Statistics */}
         <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-white font-medium mb-4">详细统计</h3>
+          <h3 className="text-white font-medium mb-4">Detailed Statistics</h3>
           <div className="grid grid-cols-2 gap-y-3 text-sm">
-            <div className="text-gray-400">总交易次数</div>
+            <div className="text-gray-400">Total Trades</div>
             <div className="text-white text-right">{stats.totalTrades}</div>
             
-            <div className="text-gray-400">获利交易</div>
+            <div className="text-gray-400">Winning Trades</div>
             <div className="text-white text-right">{stats.winningTrades}</div>
             
-            <div className="text-gray-400">亏损交易</div>
+            <div className="text-gray-400">Losing Trades</div>
             <div className="text-white text-right">{stats.losingTrades}</div>
             
-            <div className="text-gray-400">盈亏比</div>
+            <div className="text-gray-400">Profit Factor</div>
             <div className="text-white text-right">{stats.profitFactor.toFixed(2)}</div>
             
-            <div className="text-gray-400">平均盈利</div>
+            <div className="text-gray-400">Average Profit</div>
             <div className="text-green-400 text-right">+{stats.averageProfit.toFixed(2)}%</div>
             
-            <div className="text-gray-400">平均亏损</div>
+            <div className="text-gray-400">Average Loss</div>
             <div className="text-red-400 text-right">{stats.averageLoss.toFixed(2)}%</div>
             
-            <div className="text-gray-400">最大盈利</div>
+            <div className="text-gray-400">Largest Profit</div>
             <div className="text-green-400 text-right">+{stats.largestProfit.toFixed(2)}%</div>
             
-            <div className="text-gray-400">最大亏损</div>
+            <div className="text-gray-400">Largest Loss</div>
             <div className="text-red-400 text-right">{stats.largestLoss.toFixed(2)}%</div>
             
-            <div className="text-gray-400">年化收益</div>
+            <div className="text-gray-400">Annualized Return</div>
             <div className={`text-right ${stats.annualizedReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               {stats.annualizedReturn >= 0 ? '+' : ''}{stats.annualizedReturn.toFixed(2)}%
             </div>
           </div>
         </div>
         
-        {/* 右侧：交易记录 */}
+        {/* Right: Trade History */}
         <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-white font-medium mb-4">最近交易</h3>
+          <h3 className="text-white font-medium mb-4">Recent Trades</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-left text-gray-400 text-sm">
-                  <th className="pb-2">类型</th>
-                  <th className="pb-2">入场价</th>
-                  <th className="pb-2">出场价</th>
-                  <th className="pb-2">收益</th>
+                  <th className="pb-2">Type</th>
+                  <th className="pb-2">Entry Price</th>
+                  <th className="pb-2">Exit Price</th>
+                  <th className="pb-2">Profit</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 {trades.map((trade) => (
                   <tr key={trade.id} className="border-t border-gray-700">
                     <td className={`py-2 ${trade.type === 'BUY' ? 'text-green-400' : 'text-red-400'}`}>
-                      {trade.type === 'BUY' ? '做多' : '做空'}
+                      {trade.type === 'BUY' ? 'Long' : 'Short'}
                     </td>
                     <td className="py-2 text-gray-300">{trade.entry.toFixed(2)}</td>
                     <td className="py-2 text-gray-300">{trade.exit.toFixed(2)}</td>
@@ -276,19 +276,19 @@ export default function BacktestResults({
           </div>
           <div className="mt-4 text-center">
             <button className="text-purple-400 text-sm hover:text-purple-300">
-              查看全部交易 →
+              View All Trades →
             </button>
           </div>
         </div>
       </div>
       
-      {/* 底部按钮 */}
+      {/* Bottom Buttons */}
       <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
         <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
-          保存到我的策略
+          Save to My Strategy
         </button>
         <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-          使用此策略交易
+          Use This Strategy for Trading
         </button>
       </div>
     </div>

@@ -14,7 +14,7 @@ interface RecentTradesProps {
   limit?: number;
 }
 
-// 生成随机交易
+// Generate random trades
 const generateRandomTrade = (market: string = 'SOL-PERP', basePrice: number = 101.20): Trade => {
   const side = Math.random() > 0.5 ? 'buy' : 'sell';
   const priceDelta = (Math.random() * 0.2 - 0.1) * basePrice;
@@ -26,15 +26,20 @@ const generateRandomTrade = (market: string = 'SOL-PERP', basePrice: number = 10
     price,
     size,
     side,
-    timestamp: new Date(Date.now() - Math.floor(Math.random() * 300000)), // 最近5分钟内
+    timestamp: new Date(Date.now() - Math.floor(Math.random() * 300000)), // Within last 5 minutes
     market
   };
 };
 
-// 模拟数据
-const generateMockTrades = (count: number, market: string = 'SOL-PERP'): Trade[] => {
+// Mock data
+const mockTrades = [
+  // ... existing code ...
+];
+
+// Generate mock trades
+const generateMockTrades = (limit: number, market: string = 'SOL-PERP'): Trade[] => {
   const basePrice = 101.20;
-  return Array.from({ length: count }, () => generateRandomTrade(market, basePrice))
+  return Array.from({ length: limit }, () => generateRandomTrade(market, basePrice))
     .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 };
 
@@ -44,7 +49,7 @@ const RecentTrades: React.FC<RecentTradesProps> = ({
 }) => {
   const [trades, setTrades] = useState<Trade[]>(generateMockTrades(limit, market));
   
-  // 格式化时间
+  // Format time
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('zh-CN', { 
       hour: '2-digit', 
@@ -54,7 +59,7 @@ const RecentTrades: React.FC<RecentTradesProps> = ({
     });
   };
 
-  // 格式化价格
+  // Format price
   const formatPrice = (price: number): string => {
     if (price < 0.0001) return price.toFixed(8);
     if (price < 0.1) return price.toFixed(6);
@@ -62,7 +67,7 @@ const RecentTrades: React.FC<RecentTradesProps> = ({
     return price.toFixed(2);
   };
 
-  // 每3秒添加一个新交易模拟数据流
+  // Add new mock trade data every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       const newTrade = generateRandomTrade(market);
@@ -75,17 +80,17 @@ const RecentTrades: React.FC<RecentTradesProps> = ({
   return (
     <div className="w-full h-full bg-gray-900 rounded-lg shadow-md overflow-hidden">
       <div className="p-3 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">近期成交</h3>
+        <h3 className="text-lg font-semibold text-white">Recent Trades</h3>
       </div>
       
-      {/* 表头 */}
+      {/* Header */}
       <div className="grid grid-cols-3 text-xs text-gray-400 uppercase p-2 border-b border-gray-800">
-        <div>价格(USDC)</div>
-        <div className="text-right">数量({market.split('-')[0]})</div>
-        <div className="text-right">时间</div>
+        <div>Price (USDC)</div>
+        <div className="text-right">Size ({market.split('-')[0]})</div>
+        <div className="text-right">Time</div>
       </div>
       
-      {/* 交易列表 */}
+      {/* Trade List */}
       <div className="overflow-y-auto h-[calc(100%-80px)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {trades.map((trade) => (
           <div 
@@ -102,7 +107,7 @@ const RecentTrades: React.FC<RecentTradesProps> = ({
         
         {trades.length === 0 && (
           <div className="text-center text-gray-400 p-4">
-            暂无交易数据
+            No trades yet
           </div>
         )}
       </div>

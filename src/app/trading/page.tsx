@@ -11,34 +11,40 @@ export default function TradingPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col space-y-6">
-          {/* 标题和代币选择器 */}
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-white">交易终端</h1>
-            <div className="w-64">
-              <TokenSelector />
-            </div>
+        {/* Title and Token Selector */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-white">Trading Terminal</h1>
+          <div className="flex items-center space-x-4">
+            <TokenSelector />
           </div>
+        </div>
 
-          {/* 主要内容区域 - 采用网格布局 */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-15rem)]">
-            {/* 左侧 - 图表和持仓 */}
-            <div className="lg:col-span-3 grid grid-rows-[1fr,auto] gap-6">
-              {/* 交易图表 */}
-              <div className="bg-gray-900 p-4 rounded-lg shadow-md h-[500px]">
-                <TradingView />
-              </div>
+        {/* Main Content Area - Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Side - Chart and Positions */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Trading Chart */}
+            <div className="bg-gray-800 rounded-lg shadow-lg p-4">
+              <TradingView />
+            </div>
 
-              {/* 持仓和最近交易 */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {/* Positions and Recent Trades */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-800 rounded-lg shadow-lg p-4">
                 <PositionsList />
+              </div>
+              <div className="bg-gray-800 rounded-lg shadow-lg p-4">
                 <RecentTrades />
               </div>
             </div>
+          </div>
 
-            {/* 右侧 - 订单簿和交易表单 */}
-            <div className="grid grid-rows-2 gap-6 h-full">
+          {/* Right Side - Order Book and Trade Form */}
+          <div className="space-y-6">
+            <div className="bg-gray-800 rounded-lg shadow-lg p-4">
               <OrderBook />
+            </div>
+            <div className="bg-gray-800 rounded-lg shadow-lg p-4">
               <TradeForm />
             </div>
           </div>

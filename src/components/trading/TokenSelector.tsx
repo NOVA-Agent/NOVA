@@ -67,14 +67,19 @@ const TokenSelector: React.FC<TokenSelectorProps> = ({
     demoTokens.find(t => t.id === selectedTokenId) || demoTokens[0]
   );
 
-  // 过滤代币
-  const filteredTokens = demoTokens.filter(token => 
-    token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter tokens
+  const filterTokens = (query: string) => {
+    if (!query) return demoTokens;
+    const lowercaseQuery = query.toLowerCase();
+    return demoTokens.filter(
+      token =>
+        token.symbol.toLowerCase().includes(lowercaseQuery) ||
+        token.name.toLowerCase().includes(lowercaseQuery)
+    );
+  };
 
-  // 选择代币
-  const handleSelectToken = (token: Token) => {
+  // Select token
+  const handleTokenSelect = (token: Token) => {
     setSelected(token);
     setIsOpen(false);
     if (onSelect) {
@@ -82,15 +87,18 @@ const TokenSelector: React.FC<TokenSelectorProps> = ({
     }
   };
 
-  // 格式化价格变化
+  // Format price change
   const formatPriceChange = (change: number) => {
-    const sign = change > 0 ? '+' : '';
-    return `${sign}${change.toFixed(2)}%`;
+    const isPositive = change >= 0;
+    return {
+      text: `${isPositive ? '+' : ''}${change.toFixed(2)}%`,
+      color: isPositive ? 'text-green-500' : 'text-red-500',
+    };
   };
 
   return (
     <div className="relative">
-      {/* 选中的代币显示 */}
+      {/* Selected Token Display */}
       <button
         className="flex items-center bg-gray-800 hover:bg-gray-700 rounded-lg p-2 text-white w-full"
         onClick={() => setIsOpen(!isOpen)}
@@ -125,30 +133,30 @@ const TokenSelector: React.FC<TokenSelectorProps> = ({
         </svg>
       </button>
 
-      {/* 下拉菜单 */}
+      {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute z-20 mt-2 w-full bg-gray-800 rounded-lg shadow-xl">
-          {/* 搜索输入框 */}
+          {/* Search Input */}
           <div className="p-2 border-b border-gray-700">
             <input
               type="text"
               className="w-full p-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
-              placeholder="搜索代币..."
+              placeholder="Search tokens..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          {/* 代币列表 */}
+          {/* Token List */}
           <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-            {filteredTokens.length > 0 ? (
-              filteredTokens.map((token) => (
+            {filterTokens(searchQuery).length > 0 ? (
+              filterTokens(searchQuery).map((token) => (
                 <div
                   key={token.id}
                   className={`flex items-center p-3 cursor-pointer hover:bg-gray-700 ${
                     selected.id === token.id ? 'bg-gray-700' : ''
                   }`}
-                  onClick={() => handleSelectToken(token)}
+                  onClick={() => handleTokenSelect(token)}
                 >
                   <div className="w-8 h-8 rounded-full overflow-hidden mr-2 bg-gray-700 flex items-center justify-center">
                     <img
@@ -169,14 +177,14 @@ const TokenSelector: React.FC<TokenSelectorProps> = ({
                       minimumFractionDigits: token.price < 0.01 ? 8 : 2,
                       maximumFractionDigits: token.price < 0.01 ? 8 : 2
                     })}</div>
-                    <div className={`text-xs ${token.priceChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {formatPriceChange(token.priceChange)}
+                    <div className={formatPriceChange(token.priceChange).color}>
+                      {formatPriceChange(token.priceChange).text}
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="p-3 text-center text-gray-400">未找到代币</div>
+              <div className="p-3 text-center text-gray-400">No tokens found</div>
             )}
           </div>
         </div>

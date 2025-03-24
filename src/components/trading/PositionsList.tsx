@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface Position {
   id: string;
@@ -18,7 +18,7 @@ interface PositionsListProps {
   onClosePosition?: (positionId: string) => void;
 }
 
-// 模拟数据
+// Mock data
 const mockPositions: Position[] = [
   {
     id: 'pos-1',
@@ -65,22 +65,23 @@ const PositionsList: React.FC<PositionsListProps> = ({ onClosePosition }) => {
   const [positions, setPositions] = useState<Position[]>(mockPositions);
   const [activeTab, setActiveTab] = useState<'all' | 'long' | 'short'>('all');
 
-  // 根据选项卡过滤头寸
-  const filteredPositions = positions.filter(position => {
-    if (activeTab === 'all') return true;
-    return position.type === activeTab;
-  });
+  // Filter positions based on tab
+  const filteredPositions = useMemo(() => {
+    if (activeTab === 'all') return positions;
+    return positions.filter(position => position.type === activeTab);
+  }, [positions, activeTab]);
 
-  // 关闭头寸
+  // Close position
   const handleClosePosition = (positionId: string) => {
     if (onClosePosition) {
       onClosePosition(positionId);
     }
-    // 在UI中删除头寸（实际场景中应该在确认关闭后才移除）
+    // In a real scenario, this would trigger a close position API call
+    // For demo purposes, we'll just remove it from the UI
     setPositions(positions.filter(pos => pos.id !== positionId));
   };
 
-  // 格式化价格
+  // Format price
   const formatPrice = (price: number) => {
     if (price < 0.0001) {
       return price.toFixed(8);
@@ -88,7 +89,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ onClosePosition }) => {
     return price.toFixed(2);
   };
 
-  // 格式化PnL
+  // Format PnL
   const formatPnL = (pnl: number, percentage: number) => {
     const sign = pnl >= 0 ? '+' : '';
     return (
@@ -103,57 +104,57 @@ const PositionsList: React.FC<PositionsListProps> = ({ onClosePosition }) => {
   return (
     <div className="w-full bg-gray-900 rounded-lg shadow-md overflow-hidden">
       <div className="p-3 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">持仓</h3>
+        <h3 className="text-lg font-semibold text-white">Positions</h3>
         
-        {/* 选项卡 */}
-        <div className="flex mt-2 space-x-2">
+        {/* Tabs */}
+        <div className="flex space-x-4 mb-4 mt-2">
           <button
-            className={`px-3 py-1 text-sm rounded-md ${
+            className={`px-4 py-2 rounded-lg font-medium ${
               activeTab === 'all'
                 ? 'bg-gray-700 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                : 'text-gray-400 hover:text-white'
             }`}
             onClick={() => setActiveTab('all')}
           >
-            全部
+            All
           </button>
           <button
-            className={`px-3 py-1 text-sm rounded-md ${
+            className={`px-4 py-2 rounded-lg font-medium ${
               activeTab === 'long'
                 ? 'bg-green-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                : 'text-gray-400 hover:text-white'
             }`}
             onClick={() => setActiveTab('long')}
           >
-            多头
+            Long
           </button>
           <button
-            className={`px-3 py-1 text-sm rounded-md ${
+            className={`px-4 py-2 rounded-lg font-medium ${
               activeTab === 'short'
                 ? 'bg-red-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                : 'text-gray-400 hover:text-white'
             }`}
             onClick={() => setActiveTab('short')}
           >
-            空头
+            Short
           </button>
         </div>
       </div>
 
-      {/* 头寸列表 */}
+      {/* Position List */}
       {filteredPositions.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm text-left">
             <thead className="text-xs text-gray-400 uppercase bg-gray-800">
               <tr>
-                <th className="px-4 py-2">代币</th>
-                <th className="px-4 py-2">规模</th>
-                <th className="px-4 py-2">杠杆</th>
-                <th className="px-4 py-2">入场价</th>
-                <th className="px-4 py-2">当前价</th>
-                <th className="px-4 py-2">清算价</th>
+                <th className="px-4 py-2">Token</th>
+                <th className="px-4 py-2">Size</th>
+                <th className="px-4 py-2">Leverage</th>
+                <th className="px-4 py-2">Entry Price</th>
+                <th className="px-4 py-2">Current Price</th>
+                <th className="px-4 py-2">Liquidation Price</th>
                 <th className="px-4 py-2">PnL</th>
-                <th className="px-4 py-2">操作</th>
+                <th className="px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -177,10 +178,10 @@ const PositionsList: React.FC<PositionsListProps> = ({ onClosePosition }) => {
                   </td>
                   <td className="px-4 py-3">
                     <button
-                      className="px-2 py-1 text-xs bg-gray-700 hover:bg-gray-600 text-white rounded"
+                      className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm"
                       onClick={() => handleClosePosition(position.id)}
                     >
-                      平仓
+                      Close
                     </button>
                   </td>
                 </tr>
@@ -190,8 +191,8 @@ const PositionsList: React.FC<PositionsListProps> = ({ onClosePosition }) => {
         </div>
       ) : (
         <div className="py-6 text-center text-gray-400">
-          <p>没有持仓</p>
-          <p className="text-sm mt-1">开仓后将在此显示</p>
+          <p>No positions</p>
+          <p className="text-sm mt-1">Open a position to see it here</p>
         </div>
       )}
     </div>

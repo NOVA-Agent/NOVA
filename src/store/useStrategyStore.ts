@@ -9,10 +9,107 @@ import {
 } from '@/types/strategy';
 import { componentLibrary } from '@/modules/strategy-builder/componentLibrary';
 
-// 策略组件类型
-export type ComponentType = 'indicator' | 'entryCondition' | 'exitCondition' | 'positionSizing' | 'riskManagement';
+// Strategy Component Types
+type ComponentType = 'indicator' | 'condition' | 'action';
 
-// 策略组件接口
+// Strategy Component Interface
+interface Component {
+  id: string;
+  type: ComponentType;
+  name: string;
+  description: string;
+  properties: Record<string, any>;
+}
+
+// Strategy Interface
+interface Strategy {
+  id: string;
+  name: string;
+  description: string;
+  components: Component[];
+  parameters: Record<string, any>;
+}
+
+// Strategy State Interface
+interface StrategyState {
+  strategies: Strategy[];
+  selectedStrategy: Strategy | null;
+  components: Component[];
+  canvas: {
+    nodes: any[];
+    edges: any[];
+  };
+}
+
+// Strategy Management Methods
+interface StrategyActions {
+  createStrategy: (strategy: Strategy) => void;
+  updateStrategy: (id: string, updates: Partial<Strategy>) => void;
+  deleteStrategy: (id: string) => void;
+  selectStrategy: (id: string) => void;
+}
+
+// Component Management Methods
+interface ComponentActions {
+  addComponent: (component: Component) => void;
+  updateComponent: (id: string, updates: Partial<Component>) => void;
+  deleteComponent: (id: string) => void;
+}
+
+// Template Management
+interface TemplateActions {
+  saveAsTemplate: (strategy: Strategy) => void;
+  loadTemplate: (id: string) => void;
+}
+
+// Canvas Operations
+interface CanvasActions {
+  addNode: (node: any) => void;
+  updateNode: (id: string, updates: any) => void;
+  deleteNode: (id: string) => void;
+  addEdge: (edge: any) => void;
+  updateEdge: (id: string, updates: any) => void;
+  deleteEdge: (id: string) => void;
+}
+
+// Backtest Results
+interface BacktestResult {
+  totalReturn: number;
+  sharpeRatio: number;
+  maxDrawdown: number;
+  winRate: number;
+  trades: any[];
+}
+
+// Strategy Templates
+const defaultTemplates: Strategy[] = [
+  {
+    id: 'ma-crossover',
+    name: 'Moving Average Crossover',
+    description: 'Buy when fast MA crosses above slow MA, sell when crosses below',
+    components: [],
+    parameters: {
+      fastPeriod: 10,
+      slowPeriod: 20
+    }
+  }
+];
+
+// Default Components
+const defaultComponents: Component[] = [
+  {
+    id: 'ma',
+    type: 'indicator',
+    name: 'Moving Average',
+    description: 'Calculate moving average of price',
+    properties: {
+      period: 14,
+      source: 'close'
+    }
+  }
+];
+
+// Strategy Component Interface
 export interface StrategyComponent {
   id: string;
   type: ComponentType;
@@ -23,7 +120,7 @@ export interface StrategyComponent {
   connections: { to: string; from: string; type: string }[];
 }
 
-// 策略接口
+// Strategy Interface
 export interface Strategy {
   id: string;
   name: string;
@@ -37,30 +134,30 @@ export interface Strategy {
   updatedAt: string;
 }
 
-// 策略状态接口
+// Strategy State Interface
 interface StrategyState {
   strategies: Strategy[];
   currentStrategy: Strategy | null;
   selectedComponent: string | null;
   
-  // 策略管理方法
+  // Strategy Management Methods
   createNewStrategy: (name: string, market: string, timeframe: string) => void;
   updateStrategy: (strategy: Strategy) => void;
   deleteStrategy: (id: string) => void;
   duplicateStrategy: (id: string) => void;
   setCurrentStrategy: (strategy: Strategy | null) => void;
   
-  // 组件管理方法
+  // Component Management Methods
   addComponent: (component: Omit<StrategyComponent, 'id'>) => void;
   updateComponent: (component: StrategyComponent) => void;
   removeComponent: (id: string) => void;
   selectComponent: (id: string | null) => void;
   connectComponents: (from: string, to: string, type: string) => void;
   
-  // 模板管理
+  // Template Management
   loadStrategyTemplate: (templateId: string) => void;
   
-  // 画布操作
+  // Canvas Operations
   canvasComponents: Array<{
     id: string;
     componentId: string;
@@ -72,17 +169,17 @@ interface StrategyState {
   disconnectComponents: (fromId: string, toId: string) => void;
   removeCanvasComponent: (id: string) => void;
   
-  // 回测结果
+  // Backtest Results
   backtestResults: BacktestResult[];
   addBacktestResult: (result: BacktestResult) => void;
   getBacktestResultsForStrategy: (strategyId: string) => BacktestResult[];
 }
 
-// 策略模板
+// Strategy Template
 const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'updatedAt'>> = {
   'moving-average-crossover': {
-    name: '移动平均线交叉策略',
-    description: '当快速移动平均线上穿慢速移动平均线时买入，下穿时卖出',
+    name: 'Moving Average Crossover',
+    description: 'Buy when fast MA crosses above slow MA, sell when crosses below',
     market: 'SOL/USDC',
     timeframe: '1h',
     initialCapital: 1000,
@@ -91,8 +188,8 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
       {
         id: 'ma-fast',
         type: 'indicator',
-        name: '移动平均线',
-        description: '计算价格的移动平均值',
+        name: 'Moving Average',
+        description: 'Calculate moving average of price',
         properties: { period: 9, source: 'close', type: 'simple' },
         position: { x: 100, y: 100 },
         connections: []
@@ -100,17 +197,17 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
       {
         id: 'ma-slow',
         type: 'indicator',
-        name: '移动平均线',
-        description: '计算价格的移动平均值',
+        name: 'Moving Average',
+        description: 'Calculate moving average of price',
         properties: { period: 21, source: 'close', type: 'simple' },
         position: { x: 100, y: 200 },
         connections: []
       },
       {
         id: 'crossover',
-        type: 'entryCondition',
-        name: '交叉',
-        description: '当一条线上穿另一条线时触发',
+        type: 'condition',
+        name: 'Cross Above',
+        description: 'When fast MA crosses above slow MA',
         properties: { type: 'above' },
         position: { x: 300, y: 150 },
         connections: [
@@ -120,9 +217,9 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
       },
       {
         id: 'crossunder',
-        type: 'exitCondition',
-        name: '交叉',
-        description: '当一条线下穿另一条线时触发',
+        type: 'action',
+        name: 'Cross Below',
+        description: 'When fast MA crosses below slow MA',
         properties: { type: 'below' },
         position: { x: 300, y: 250 },
         connections: [
@@ -133,8 +230,8 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
     ]
   },
   'rsi-reversal': {
-    name: 'RSI反转策略',
-    description: '当RSI超卖时买入，超买时卖出',
+    name: 'RSI Reversal',
+    description: 'Buy when RSI is below 30, sell when RSI is above 70',
     market: 'BTC/USDC',
     timeframe: '4h',
     initialCapital: 1000,
@@ -144,16 +241,16 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
         id: 'rsi',
         type: 'indicator',
         name: 'RSI',
-        description: '相对强弱指标',
+        description: 'Relative Strength Index',
         properties: { period: 14, source: 'close' },
         position: { x: 100, y: 100 },
         connections: []
       },
       {
         id: 'oversold',
-        type: 'entryCondition',
-        name: 'RSI超卖',
-        description: 'RSI低于特定值时触发',
+        type: 'condition',
+        name: 'RSI Below 30',
+        description: 'RSI is below 30',
         properties: { threshold: 30 },
         position: { x: 300, y: 100 },
         connections: [
@@ -162,9 +259,9 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
       },
       {
         id: 'overbought',
-        type: 'exitCondition',
-        name: 'RSI超买',
-        description: 'RSI高于特定值时触发',
+        type: 'action',
+        name: 'RSI Above 70',
+        description: 'RSI is above 70',
         properties: { threshold: 70 },
         position: { x: 300, y: 200 },
         connections: [
@@ -173,9 +270,9 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
       },
       {
         id: 'stopLoss',
-        type: 'riskManagement',
-        name: '止损',
-        description: '设置止损点',
+        type: 'action',
+        name: 'Stop Loss',
+        description: 'Set stop loss',
         properties: { percentage: 5 },
         position: { x: 500, y: 150 },
         connections: []
@@ -184,7 +281,7 @@ const strategyTemplates: Record<string, Omit<Strategy, 'id' | 'createdAt' | 'upd
   }
 };
 
-// 创建策略存储
+// Create Strategy Store
 export const useStrategyStore = create<StrategyState>()(
   persist(
     (set, get) => ({
@@ -192,7 +289,7 @@ export const useStrategyStore = create<StrategyState>()(
       currentStrategy: null,
       selectedComponent: null,
       
-      // 策略管理方法
+      // Strategy Management Methods
       createNewStrategy: (name, market, timeframe) => {
         const newStrategy: Strategy = {
           id: uuidv4(),
@@ -244,7 +341,7 @@ export const useStrategyStore = create<StrategyState>()(
         const duplicate: Strategy = {
           ...strategy,
           id: uuidv4(),
-          name: `${strategy.name} (复制)`,
+          name: `${strategy.name} (Copy)`,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
@@ -258,7 +355,7 @@ export const useStrategyStore = create<StrategyState>()(
         set({ currentStrategy: strategy });
       },
       
-      // 组件管理方法
+      // Component Management Methods
       addComponent: (component) => {
         if (!get().currentStrategy) return;
         
@@ -350,7 +447,7 @@ export const useStrategyStore = create<StrategyState>()(
         }));
       },
       
-      // 模板管理
+      // Template Management
       loadStrategyTemplate: (templateId) => {
         const template = strategyTemplates[templateId];
         if (!template) return;
@@ -368,7 +465,7 @@ export const useStrategyStore = create<StrategyState>()(
         }));
       },
       
-      // 画布操作
+      // Canvas Operations
       canvasComponents: [],
       addCanvasComponent: (componentId, position) => set((state) => ({
         canvasComponents: [
@@ -397,10 +494,10 @@ export const useStrategyStore = create<StrategyState>()(
         })
       })),
       removeCanvasComponent: (id) => set((state) => {
-        // 先过滤掉要删除的组件
+        // First filter out the component to be deleted
         const filteredComponents = state.canvasComponents.filter(comp => comp.id !== id);
         
-        // 然后移除与该组件相关的所有连接
+        // Then remove all connections related to the deleted component
         const updatedComponents = filteredComponents.map(comp => ({
           ...comp,
           connections: comp.connections.filter(conn => conn.to !== id)
@@ -409,7 +506,7 @@ export const useStrategyStore = create<StrategyState>()(
         return { canvasComponents: updatedComponents };
       }),
       
-      // 回测结果
+      // Backtest Results
       backtestResults: [],
       addBacktestResult: (result) => set((state) => ({
         backtestResults: [...state.backtestResults, result]

@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react';
+import Link from 'next/link';
+import { BellIcon, MenuIcon } from '@heroicons/react/24/outline';
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,60 +9,53 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      {/* 顶部导航栏 */}
-      <header className="bg-gray-800 shadow-md">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center">
-            {/* 左侧Logo */}
-            <div className="flex items-center">
-              <div className="flex items-center mr-8">
-                <img src="/logo.svg" alt="NOVA" className="h-8 w-8 mr-2" />
-                <span className="text-xl font-bold text-purple-500">NOVA</span>
-              </div>
-              
-              {/* 导航链接 */}
-              <nav className="hidden md:flex space-x-8">
-                <a href="/" className="font-medium hover:text-purple-400 transition-colors">首页</a>
-                <a href="/trading" className="font-medium text-purple-400 border-b-2 border-purple-400 pb-1">交易</a>
-                <a href="/dashboard" className="font-medium hover:text-purple-400 transition-colors">仪表盘</a>
-                <a href="/ai-analyst" className="font-medium hover:text-purple-400 transition-colors">AI分析师</a>
-                <a href="/strategy-builder" className="font-medium hover:text-purple-400 transition-colors">策略构建器</a>
-                <a href="/marketplace" className="font-medium hover:text-purple-400 transition-colors">市场</a>
-              </nav>
-            </div>
-            
-            {/* 右侧用户区域 */}
-            <div className="flex items-center space-x-4">
-              {/* 通知图标 */}
-              <button className="p-2 rounded-full hover:bg-gray-700 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
-                <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-              </button>
-              
-              {/* 钱包按钮 */}
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium transition-colors">
-                连接钱包
-              </button>
-              
-              {/* 移动端菜单按钮 */}
-              <button className="md:hidden p-2 rounded-full hover:bg-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
+      {/* Top Navigation Bar */}
+      <nav className="bg-gray-900 text-white px-6 py-4 flex items-center justify-between">
+        {/* Left Logo */}
+        <div className="flex items-center">
+          <Link href="/" className="text-2xl font-bold text-purple-400">
+            NOVA
+          </Link>
         </div>
-      </header>
+
+        {/* Navigation Links */}
+        <div className="hidden md:flex space-x-8">
+          <a href="/" className="font-medium hover:text-purple-400 transition-colors">Home</a>
+          <a href="/trading" className="font-medium text-purple-400 border-b-2 border-purple-400 pb-1">Trading</a>
+          <a href="/dashboard" className="font-medium hover:text-purple-400 transition-colors">Dashboard</a>
+          <a href="/ai-analyst" className="font-medium hover:text-purple-400 transition-colors">AI Analyst</a>
+          <a href="/strategy-builder" className="font-medium hover:text-purple-400 transition-colors">Strategy Builder</a>
+          <a href="/marketplace" className="font-medium hover:text-purple-400 transition-colors">Market</a>
+        </div>
+
+        {/* Right User Area */}
+        <div className="flex items-center space-x-4">
+          {/* Notification Icon */}
+          <button className="p-2 hover:bg-gray-800 rounded-full">
+            <BellIcon className="w-6 h-6" />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              3
+            </span>
+          </button>
+
+          {/* Wallet Button */}
+          <button className="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-lg transition-colors">
+            Connect Wallet
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button className="md:hidden p-2 hover:bg-gray-800 rounded-full">
+            <MenuIcon className="w-6 h-6" />
+          </button>
+        </div>
+      </nav>
       
-      {/* 主要内容 */}
-      <main className="flex-1 w-full">
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
         {children}
       </main>
       
-      {/* 页脚 */}
+      {/* Page Footer */}
       <footer className="bg-gray-800 py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -70,7 +65,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <span className="text-xl font-bold text-purple-500">NOVA</span>
               </div>
               <p className="text-gray-400 mb-4">
-                AI驱动的Solana交易平台，让交易更智能、更高效。
+                AI-driven Solana trading platform, making trading smarter and more efficient.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-purple-400">
@@ -92,42 +87,42 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             
             <div>
-              <h3 className="text-white font-medium mb-4">产品</h3>
+              <h3 className="text-white font-medium mb-4">Products</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">交易终端</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">AI分析师</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">策略构建器</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">代币信息</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Trading Terminal</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">AI Analyst</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Strategy Builder</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Token Information</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-white font-medium mb-4">资源</h3>
+              <h3 className="text-white font-medium mb-4">Resources</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">文档</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Documentation</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-purple-400">API</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">市场数据</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">帮助中心</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Market Data</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Help Center</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-white font-medium mb-4">公司</h3>
+              <h3 className="text-white font-medium mb-4">Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">关于我们</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">博客</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">联系我们</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-purple-400">职业机会</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">About Us</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Blog</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Contact Us</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-purple-400">Career Opportunities</a></li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400">© 2023 NOVA. 保留所有权利。</p>
+            <p className="text-gray-400">© 2023 NOVA. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-purple-400">隐私政策</a>
-              <a href="#" className="text-gray-400 hover:text-purple-400">服务条款</a>
-              <a href="#" className="text-gray-400 hover:text-purple-400">Cookie 政策</a>
+              <a href="#" className="text-gray-400 hover:text-purple-400">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-purple-400">Service Terms</a>
+              <a href="#" className="text-gray-400 hover:text-purple-400">Cookie Policy</a>
             </div>
           </div>
         </div>

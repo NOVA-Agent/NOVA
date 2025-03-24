@@ -1,79 +1,71 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { toast, Toaster as SonnerToaster, ToastBar } from 'sonner';
 import { FaCheck, FaExclamationTriangle, FaInfo, FaTimes } from 'react-icons/fa';
+import { v4 as uuidv4 } from 'uuid';
+import { cn } from '../../lib/utils';
 
-// 自定义Toast hook，用于展示通知
+// Custom Toast hook for displaying notifications
 export const useToast = () => {
-  const showSuccess = (message: string) => {
-    toast.success(message, {
-      icon: <FaCheck className="text-success" />,
-    });
-  };
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showError = (message: string) => {
-    toast.error(message, {
-      icon: <FaExclamationTriangle className="text-error" />,
-    });
-  };
+  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
+    const id = uuidv4();
+    setToasts(prev => [...prev, { ...toast, id }]);
 
-  const showWarning = (message: string) => {
-    toast.warning(message, {
-      icon: <FaExclamationTriangle className="text-warning" />,
-    });
-  };
+    // Auto remove after duration
+    setTimeout(() => {
+      removeToast(id);
+    }, toast.duration || 3000);
+  }, []);
 
-  const showInfo = (message: string) => {
-    toast.info(message, {
-      icon: <FaInfo className="text-primary-400" />,
-    });
-  };
-
-  const dismiss = (toastId?: string) => {
-    if (toastId) {
-      toast.dismiss(toastId);
-    } else {
-      toast.dismiss();
-    }
-  };
+  const removeToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  }, []);
 
   return {
-    success: showSuccess,
-    error: showError,
-    warning: showWarning,
-    info: showInfo,
-    dismiss,
+    toasts,
+    addToast,
+    removeToast,
   };
 };
 
-// Toast组件
-export const Toaster = () => {
+// Toast component
+export const Toaster: React.FC = () => {
+  const { toasts, removeToast } = useToast();
+
   return (
-    <SonnerToaster
-      position="top-right"
-      toastOptions={{
-        duration: 4000,
-        className: 'bg-dark-300 border border-dark-200 text-white',
-        style: {
-          background: '#0c101a', // dark-300
-          color: 'white',
-          borderRadius: '0.375rem',
-          border: '1px solid rgba(30, 41, 59, 0.5)',
-        },
-      }}
-    >
-      {(t) => (
-        <ToastBar toast={t}>
-          {({ icon, message, dismiss }) => (
-            <>
-              {icon}
-              {message}
-              <button onClick={dismiss} className="ml-2">
-                <FaTimes className="text-gray-400 hover:text-white" />
+    <div className="fixed bottom-4 right-4 z-50">
+      <div className="space-y-2">
+        {toasts.map(toast => (
+          <div
+            key={toast.id}
+            className={cn(
+              'px-4 py-3 rounded-lg shadow-lg text-white',
+              {
+                'bg-green-500': toast.type === 'success',
+                'bg-red-500': toast.type === 'error',
+                'bg-yellow-500': toast.type === 'warning',
+                'bg-blue-500': toast.type === 'info',
+              }
+            )}
+          >
+            <div className="flex items-center space-x-2">
+              {toast.title && (
+                <span className="font-medium">{toast.title}</span>
+              )}
+              {toast.message && (
+                <span>{toast.message}</span>
+              )}
+              <button
+                onClick={() => removeToast(toast.id)}
+                className="ml-2 hover:opacity-80"
+              >
+                ×
               </button>
-            </>
-          )}
-        </ToastBar>
-      )}
-    </SonnerToaster>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }; 

@@ -18,7 +18,7 @@ export interface StrategyComponent {
   properties: Record<string, ComponentProperty>;
 }
 
-// 创建组件的辅助函数
+// Helper function to create components
 const createComponent = (
   type: StrategyComponent['type'],
   name: string,
@@ -32,7 +32,7 @@ const createComponent = (
   properties,
 });
 
-// 指标组件
+// Indicator components
 const indicators = [
   createComponent(
     'indicator',
@@ -41,7 +41,7 @@ const indicators = [
     {
       period: {
         type: 'number',
-        label: '周期',
+        label: 'Period',
         value: 20,
         min: 2,
         max: 200,
@@ -49,13 +49,13 @@ const indicators = [
       },
       maType: {
         type: 'select',
-        label: '类型',
+        label: 'Type',
         value: 'SMA',
         options: ['SMA', 'EMA', 'WMA'],
       },
       source: {
         type: 'select',
-        label: '数据源',
+        label: 'Data Source',
         value: 'close',
         options: ['open', 'high', 'low', 'close', 'volume'],
       },
@@ -68,7 +68,7 @@ const indicators = [
     {
       period: {
         type: 'number',
-        label: '周期',
+        label: 'Period',
         value: 14,
         min: 2,
         max: 50,
@@ -76,7 +76,7 @@ const indicators = [
       },
       overbought: {
         type: 'number',
-        label: '超买阈值',
+        label: 'Overbought Level',
         value: 70,
         min: 50,
         max: 100,
@@ -84,7 +84,7 @@ const indicators = [
       },
       oversold: {
         type: 'number',
-        label: '超卖阈值',
+        label: 'Oversold Level',
         value: 30,
         min: 0,
         max: 50,
@@ -99,7 +99,7 @@ const indicators = [
     {
       period: {
         type: 'number',
-        label: '周期',
+        label: 'Period',
         value: 20,
         min: 5,
         max: 100,
@@ -107,7 +107,7 @@ const indicators = [
       },
       stdDev: {
         type: 'number',
-        label: '标准差',
+        label: 'Standard Deviation',
         value: 2,
         min: 0.5,
         max: 5,
@@ -122,7 +122,7 @@ const indicators = [
     {
       fastPeriod: {
         type: 'number',
-        label: '快线周期',
+        label: 'Fast Period',
         value: 12,
         min: 2,
         max: 50,
@@ -130,7 +130,7 @@ const indicators = [
       },
       slowPeriod: {
         type: 'number',
-        label: '慢线周期',
+        label: 'Slow Period',
         value: 26,
         min: 5,
         max: 100,
@@ -138,7 +138,7 @@ const indicators = [
       },
       signalPeriod: {
         type: 'number',
-        label: '信号周期',
+        label: 'Signal Period',
         value: 9,
         min: 2,
         max: 30,
@@ -153,7 +153,7 @@ const indicators = [
     {
       kPeriod: {
         type: 'number',
-        label: '%K周期',
+        label: '%K Period',
         value: 14,
         min: 1,
         max: 50,
@@ -161,7 +161,7 @@ const indicators = [
       },
       dPeriod: {
         type: 'number',
-        label: '%D周期',
+        label: '%D Period',
         value: 3,
         min: 1,
         max: 20,
@@ -169,7 +169,7 @@ const indicators = [
       },
       overbought: {
         type: 'number',
-        label: '超买阈值',
+        label: 'Overbought Level',
         value: 80,
         min: 50,
         max: 100,
@@ -177,7 +177,7 @@ const indicators = [
       },
       oversold: {
         type: 'number',
-        label: '超卖阈值',
+        label: 'Oversold Level',
         value: 20,
         min: 0,
         max: 50,
@@ -187,7 +187,7 @@ const indicators = [
   ),
 ];
 
-// 入场条件组件
+// Entry condition components
 const entryConditions = [
   createComponent(
     'entryCondition',
@@ -196,13 +196,13 @@ const entryConditions = [
     {
       direction: {
         type: 'select',
-        label: '方向',
+        label: 'Direction',
         value: 'above',
         options: ['above', 'below'],
       },
       priceLevel: {
         type: 'number',
-        label: '价格水平',
+        label: 'Price Level',
         value: 100,
         min: 0,
         max: 1000000,
@@ -210,7 +210,7 @@ const entryConditions = [
       },
       lookbackPeriod: {
         type: 'number',
-        label: '回溯周期',
+        label: 'Lookback Period',
         value: 20,
         min: 1,
         max: 200,
@@ -225,13 +225,13 @@ const entryConditions = [
     {
       direction: {
         type: 'select',
-        label: '方向',
+        label: 'Direction',
         value: 'crossover',
         options: ['crossover', 'crossunder'],
       },
       fastMA: {
         type: 'number',
-        label: '快线周期',
+        label: 'Fast Period',
         value: 10,
         min: 2,
         max: 50,
@@ -239,7 +239,7 @@ const entryConditions = [
       },
       slowMA: {
         type: 'number',
-        label: '慢线周期',
+        label: 'Slow Period',
         value: 30,
         min: 5,
         max: 200,
@@ -254,13 +254,13 @@ const entryConditions = [
     {
       condition: {
         type: 'select',
-        label: '条件',
+        label: 'Condition',
         value: 'oversold',
         options: ['overbought', 'oversold'],
       },
       period: {
         type: 'number',
-        label: 'RSI周期',
+        label: 'RSI Period',
         value: 14,
         min: 2,
         max: 50,
@@ -268,7 +268,7 @@ const entryConditions = [
       },
       threshold: {
         type: 'number',
-        label: '阈值',
+        label: 'Threshold',
         value: 30,
         min: 0,
         max: 100,
@@ -283,13 +283,13 @@ const entryConditions = [
     {
       direction: {
         type: 'select',
-        label: '方向',
+        label: 'Direction',
         value: 'upper',
         options: ['upper', 'lower'],
       },
       period: {
         type: 'number',
-        label: '布林带周期',
+        label: 'BB Period',
         value: 20,
         min: 5,
         max: 100,
@@ -297,7 +297,7 @@ const entryConditions = [
       },
       stdDev: {
         type: 'number',
-        label: '标准差',
+        label: 'Standard Deviation',
         value: 2,
         min: 0.5,
         max: 5,
@@ -307,7 +307,7 @@ const entryConditions = [
   ),
 ];
 
-// 出场条件组件
+// Exit condition components
 const exitConditions = [
   createComponent(
     'exitCondition',
@@ -316,7 +316,7 @@ const exitConditions = [
     {
       percentage: {
         type: 'number',
-        label: '百分比',
+        label: 'Percentage',
         value: 10,
         min: 0.1,
         max: 1000,
@@ -324,12 +324,12 @@ const exitConditions = [
       },
       trailingStop: {
         type: 'boolean',
-        label: '使用追踪止损',
+        label: 'Use Trailing Stop',
         value: false,
       },
       trailingDistance: {
         type: 'number',
-        label: '追踪距离 (%)',
+        label: 'Trailing Distance (%)',
         value: 2,
         min: 0.1,
         max: 20,
@@ -344,7 +344,7 @@ const exitConditions = [
     {
       percentage: {
         type: 'number',
-        label: '百分比',
+        label: 'Percentage',
         value: 5,
         min: 0.1,
         max: 100,
@@ -359,7 +359,7 @@ const exitConditions = [
     {
       bars: {
         type: 'number',
-        label: 'K线数量',
+        label: 'K Line Count',
         value: 20,
         min: 1,
         max: 1000,
@@ -374,13 +374,13 @@ const exitConditions = [
     {
       condition: {
         type: 'select',
-        label: '从区域',
+        label: 'From Area',
         value: 'overbought',
         options: ['overbought', 'oversold'],
       },
       period: {
         type: 'number',
-        label: 'RSI周期',
+        label: 'RSI Period',
         value: 14,
         min: 2,
         max: 50,
@@ -388,7 +388,7 @@ const exitConditions = [
       },
       threshold: {
         type: 'number',
-        label: '阈值',
+        label: 'Threshold',
         value: 70,
         min: 0,
         max: 100,
@@ -398,7 +398,7 @@ const exitConditions = [
   ),
 ];
 
-// 仓位规模组件
+// Position sizing components
 const positionSizing = [
   createComponent(
     'positionSizing',
@@ -407,7 +407,7 @@ const positionSizing = [
     {
       amount: {
         type: 'number',
-        label: '金额',
+        label: 'Amount',
         value: 1000,
         min: 1,
         max: 1000000,
@@ -422,7 +422,7 @@ const positionSizing = [
     {
       percentage: {
         type: 'number',
-        label: '百分比',
+        label: 'Percentage',
         value: 10,
         min: 0.1,
         max: 100,
@@ -437,7 +437,7 @@ const positionSizing = [
     {
       riskAmount: {
         type: 'number',
-        label: '风险金额',
+        label: 'Risk Amount',
         value: 100,
         min: 1,
         max: 1000000,
@@ -452,7 +452,7 @@ const positionSizing = [
     {
       atrPeriod: {
         type: 'number',
-        label: 'ATR周期',
+        label: 'ATR Period',
         value: 14,
         min: 5,
         max: 100,
@@ -460,7 +460,7 @@ const positionSizing = [
       },
       atrMultiplier: {
         type: 'number',
-        label: 'ATR乘数',
+        label: 'ATR Multiplier',
         value: 1,
         min: 0.5,
         max: 5,
@@ -470,7 +470,7 @@ const positionSizing = [
   ),
 ];
 
-// 风险管理组件
+// Risk management components
 const riskManagement = [
   createComponent(
     'riskManagement',
@@ -479,7 +479,7 @@ const riskManagement = [
     {
       maxRiskPercentage: {
         type: 'number',
-        label: '最大风险百分比',
+        label: 'Max Risk Percentage',
         value: 2,
         min: 0.1,
         max: 100,
@@ -494,7 +494,7 @@ const riskManagement = [
     {
       maxPositions: {
         type: 'number',
-        label: '最大持仓数',
+        label: 'Max Position Count',
         value: 5,
         min: 1,
         max: 100,
@@ -509,7 +509,7 @@ const riskManagement = [
     {
       maxDailyLoss: {
         type: 'number',
-        label: '最大日损失百分比',
+        label: 'Max Daily Loss Percentage',
         value: 5,
         min: 0.1,
         max: 100,
@@ -517,7 +517,7 @@ const riskManagement = [
       },
       resetDaily: {
         type: 'boolean',
-        label: '每日重置',
+        label: 'Daily Reset',
         value: true,
       },
     }
@@ -529,7 +529,7 @@ const riskManagement = [
     {
       maxExposurePercentage: {
         type: 'number',
-        label: '最大敞口百分比',
+        label: 'Max Exposure Percentage',
         value: 20,
         min: 1,
         max: 100,
@@ -537,7 +537,7 @@ const riskManagement = [
       },
       correlationThreshold: {
         type: 'number',
-        label: '相关性阈值',
+        label: 'Correlation Threshold',
         value: 0.7,
         min: 0,
         max: 1,
@@ -552,7 +552,7 @@ const riskManagement = [
     {
       minRatio: {
         type: 'number',
-        label: '最小风险回报比',
+        label: 'Min Risk-Reward Ratio',
         value: 2,
         min: 0.1,
         max: 10,
@@ -562,7 +562,7 @@ const riskManagement = [
   ),
 ];
 
-// 导出所有组件
+// Export all components
 export const componentLibrary = {
   indicators,
   entryConditions,
