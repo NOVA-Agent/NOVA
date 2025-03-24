@@ -7,6 +7,7 @@
   
   <p>Next-generation AI-driven trading assistant on Solana blockchain</p>
   <p>Practical market intelligence, automated trading capabilities, and portfolio management tools for the Solana DeFi ecosystem</p>
+  <p><strong>Version: 1.02</strong></p>
   
   <div>
     <a href="https://www.novas.today" target="_blank">Website</a> •
